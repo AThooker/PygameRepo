@@ -1,5 +1,6 @@
 import pygame
 
+from models import GameObject
 from utils import load_sprite
 
 class SpaceRocks:
@@ -8,6 +9,13 @@ class SpaceRocks:
         self._init_pygame()
         self.screen = pygame.display.set_mode((800,600))
         self.background = load_sprite("space2", False)
+        self.clock = pygame.time.Clock()
+        self.spaceship = GameObject(
+            (400, 300), load_sprite("spaceship"), (0,0)
+        )
+        self.meteor = GameObject(
+            (400, 300), load_sprite("meteor"), (1,0)
+        )
 
     def main_loop(self):
         while True:
@@ -28,8 +36,12 @@ class SpaceRocks:
                 quit()
 
     def _process_game_logic(self):
-        pass
+        self.spaceship.move()
+        self.meteor.move()
 
     def _draw(self):
         self.screen.blit(self.background,(0,0))
+        self.spaceship.draw(self.screen)
+        self.meteor.draw(self.screen)
         pygame.display.flip()
+        self.clock.tick(60)
